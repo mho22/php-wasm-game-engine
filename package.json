@@ -1,0 +1,9 @@
+{
+	"type": "module",
+	"dependencies": {
+		"@php-wasm/web": "^3.0.8"
+	},
+	"devDependencies" : {
+		"vite" : "^7.1.9"
+	}
+}
