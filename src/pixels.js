@@ -1,4 +1,4 @@
-const worker = new Worker( 'worker2.js', { type : 'module' } );
+const worker = new Worker( '/workers/pixels.js', { type : 'module' } );
 
 const canvas = document.getElementById( 'canvas' );
 const context = canvas.getContext( '2d' );
@@ -6,19 +6,14 @@ const context = canvas.getContext( '2d' );
 context.imageSmoothEnabled = false;
 
 canvas.width = 300;
-canvas.height = 400;
+canvas.height = 200;
 
 const rgba = new Uint8ClampedArray( canvas.width * canvas.height * 4 );
 
-
-let count = 0;
-
-setInterval( () => { console.clear(); console.log( `${count} fps\r`);count = 0; }, 1000);
+worker.postMessage( { width: canvas.width, height: canvas.height } );
 
 worker.onmessage = event =>
 {
-    count++;
-
 	const rgb = event.data;
 
     for( let i = 0, j = 0; i < rgb.length; i += 3, j += 4 )
@@ -33,12 +28,3 @@ worker.onmessage = event =>
 
     createImageBitmap( imageData ).then( bitmap => context.drawImage( bitmap, 0, 0, canvas.width, canvas.height ) );
 }
-
-function render()
-{
-    worker.postMessage(null);
-
-    requestAnimationFrame(render);
-}
-
-requestAnimationFrame(render);

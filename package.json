@@ -1,7 +1,10 @@
 {
 	"type": "module",
+	"scripts": {
+		"dev": "vite"
+	},
 	"dependencies": {
-		"@php-wasm/web": "^3.0.8"
+		"@php-wasm/web": "3.0.8"
 	},
 	"devDependencies" : {
 		"vite" : "^7.1.9"

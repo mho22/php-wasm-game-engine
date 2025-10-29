@@ -1,14 +1,16 @@
-const worker = new Worker( 'worker.js', { type : 'module' } );
+const worker = new Worker( '/workers/mouse.js', { type : 'module' } );
 
 const canvas = document.getElementById( 'canvas' );
 const context = canvas.getContext( '2d' );
 
 context.imageSmoothEnabled = false;
 
-canvas.width = 320;
-canvas.height = 200;
+canvas.width = 150;
+canvas.height = 100;
 
 const rgba = new Uint8ClampedArray( canvas.width * canvas.height * 4 );
+
+worker.postMessage( { state : 'init', width: canvas.width, height: canvas.height } );
 
 worker.onmessage = event =>
 {
@@ -25,4 +27,14 @@ worker.onmessage = event =>
     const imageData = new ImageData( rgba, canvas.width, canvas.height );
 
     createImageBitmap( imageData ).then( bitmap => context.drawImage( bitmap, 0, 0, canvas.width, canvas.height ) );
+}
+
+window.onkeydown = key => {
+    switch( key.code )
+    {
+        case 'ArrowUp' : worker.postMessage( { state : 'update', code : key.code } ); break;
+        case 'ArrowRight' : worker.postMessage( { state : 'update', code : key.code } ); break;
+        case 'ArrowDown' : worker.postMessage( { state : 'update', code : key.code } ); break;
+        case 'ArrowLeft' : worker.postMessage( { state : 'update', code : key.code } ); break;
+    }
 }

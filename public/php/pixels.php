@@ -1,17 +1,14 @@
 <?php
 
-$width = 320;
-$height = 200;
+$width = getenv( 'width' );
+$height = getenv( 'height' );
 $size = $width * $height * 3;
-$frame = 120;
-
-$offset = 0;
 
 $buffer = str_repeat( "\0", $size );
 
-$table = [];
+$offset = 0;
 
-for( $v = 0; $v < 256; $v++ ) $table[ $v ] = chr( intdiv( $v, 2 ) );
+$table = array_map( fn( $v ) => chr( intdiv( $v, 2 ) ), range( 0, 255 ) );
 
 while( true )
 {
@@ -21,13 +18,13 @@ while( true )
         // $buffer[ $i + 1 ] = $table[ ( ( $i * 5 + $offset ) + 127 ) & 255 ];
         // $buffer[ $i + 2 ] = $table[ ( ( $i * 7 + $offset ) + 127 ) & 255 ];
 
-        // $buffer[ $i ] = $table[ rand( 0, 255 ) ];
-        // $buffer[ $i + 1 ] = $table[ rand( 0, 255 ) ];
-        // $buffer[ $i + 2 ] = $table[ rand( 0, 255 ) ];
+        $buffer[ $i ] = $table[ rand( 0, 255 ) ];
+        $buffer[ $i + 1 ] = $table[ rand( 0, 255 ) ];
+        $buffer[ $i + 2 ] = $table[ rand( 0, 255 ) ];
 
-        $buffer[ $i ] = $table[ 0 ];
-        $buffer[ $i + 1 ] = $table[ 0 ];
-        $buffer[ $i + 2 ] = $table[ 255 ];
+        // $buffer[ $i ] = $table[ 0 ];
+        // $buffer[ $i + 1 ] = $table[ 0 ];
+        // $buffer[ $i + 2 ] = $table[ 255 ];
     }
 
     echo $buffer;
