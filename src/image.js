@@ -1,4 +1,4 @@
-const worker = new Worker( '/workers/guybrush.js', { type : 'module' } );
+const worker = new Worker( '/workers/image.js', { type : 'module' } );
 
 const canvas = document.getElementById( 'canvas' );
 const context = canvas.getContext( '2d' );
@@ -10,7 +10,7 @@ canvas.height = 400;
 
 const rgba = new Uint8ClampedArray( canvas.width * canvas.height * 4 );
 
-worker.postMessage( { state : 'init', width: canvas.width, height: canvas.height } );
+worker.postMessage( { width: canvas.width, height: canvas.height } );
 
 worker.onmessage = event =>
 {
@@ -28,7 +28,3 @@ worker.onmessage = event =>
 
     createImageBitmap( imageData ).then( bitmap => context.drawImage( bitmap, 0, 0, canvas.width, canvas.height ) );
 }
-
-window.onkeydown = key => worker.postMessage( { state : 'update', action : 'down', code : key.code } );
-
-window.onkeyup = key => worker.postMessage( { state : 'update', action : 'up', code : key.code } );

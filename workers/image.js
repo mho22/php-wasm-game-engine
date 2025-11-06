@@ -15,7 +15,13 @@ self.onmessage = async event =>
 		php = new PHP( await loadWebRuntime( '8.4', { emscriptenOptions: { ENV: { width, height } } } ) );
 	}
 
-	const file = '../php/pixels.php';
+	const asset = '../assets/guybrush_face.png';
+
+	php.mkdir( 'assets' );
+
+	php.writeFile( asset, new Uint8Array( await ( await fetch( asset ) ).arrayBuffer() ) );
+
+	const file = '../php/image.php';
 
 	php.mkdir( 'php' );
 

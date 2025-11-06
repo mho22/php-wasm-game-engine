@@ -1,19 +1,8 @@
-import { PHP, setPhpIniEntries } from '@php-wasm/universal';
+import { PHP } from '@php-wasm/universal';
 import { loadWebRuntime } from "@php-wasm/web";
 
 let php = null;
 let initialized = false;
-
-async function initPHP( width, height )
-{
-	if( ! initialized )
-	{
-		initialized = true;
-
-		php = new PHP( await loadWebRuntime( '8.4', { emscriptenOptions: { ENV: { width, height } } } ) );
-	}
-}
-
 
 self.onmessage = async event =>
 {
@@ -23,7 +12,12 @@ self.onmessage = async event =>
 		{
 			const { width, height } = event.data;
 
-			await initPHP( width, height );
+			if( ! initialized )
+			{
+				initialized = true;
+
+				php = new PHP( await loadWebRuntime( '8.4', { emscriptenOptions: { ENV: { width, height } } } ) );
+			}
 
 			const file = '../php/mouse.php';
 
@@ -47,9 +41,7 @@ self.onmessage = async event =>
 
 		if( event.data.state == 'update' )
 		{
-			console.log( 'YOUPI' );
-
-			php.writeFile( 'commands', event.data.code );
+			php.writeFile( '/request/stdin', event.data.code );
 		}
 	}
 };

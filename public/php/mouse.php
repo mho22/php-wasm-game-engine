@@ -14,7 +14,7 @@ $leap = 6;
 
 while( true )
 {
-	$file = file_get_contents( 'commands' );
+	$file = file_get_contents( '/request/stdin' );
 
 	if( $file )
 	{
@@ -26,7 +26,7 @@ while( true )
 			case 'ArrowLeft' : $position = $position - $leap; break;
 		}
 
-		file_put_contents( 'commands', '' );
+		file_put_contents( '/request/stdin', '' );
 	}
 
 	for( $i = 0; $i < $size; $i += 3 )
