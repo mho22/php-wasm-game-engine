@@ -1,0 +1,14 @@
+{
+	"clearCache": true,
+	"setupTasks": [
+		{ "command": "rm -rf node_modules && rm -f package-lock.json" },
+		{ "command": "npm install" }
+	],
+	"tasks": {
+		"start": {
+			"name": "dev",
+			"command": "npm run dev",
+			"runAtStart": true
+		}
+	}
+}
