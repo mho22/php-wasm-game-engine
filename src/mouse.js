@@ -29,12 +29,15 @@ worker.onmessage = event =>
     createImageBitmap( imageData ).then( bitmap => context.drawImage( bitmap, 0, 0, canvas.width, canvas.height ) );
 }
 
-window.onkeydown = key => {
-    switch( key.code )
-    {
-        case 'ArrowUp' : worker.postMessage( { state : 'update', code : key.code } ); break;
-        case 'ArrowRight' : worker.postMessage( { state : 'update', code : key.code } ); break;
-        case 'ArrowDown' : worker.postMessage( { state : 'update', code : key.code } ); break;
-        case 'ArrowLeft' : worker.postMessage( { state : 'update', code : key.code } ); break;
-    }
+window.onmousemove = key => {
+
+    const rect = canvas.getBoundingClientRect();
+
+    const mouseX = key.clientX - rect.left;
+    const mouseY = key.clientY - rect.top;
+
+    const x = Math.floor( mouseX * canvas.width / rect.width );
+    const y = Math.floor( mouseY * canvas.height / rect.height );
+
+    worker.postMessage( { state : 'update', x : x, y : y } );
 }

@@ -41,7 +41,7 @@ self.onmessage = async event =>
 
 		if( event.data.state == 'update' )
 		{
-			php.writeFile( '/request/stdin', event.data.code );
+			php.writeFile( '/request/stdin', JSON.stringify( { x : event.data.x, y : event.data.y } ) );
 		}
 	}
 };

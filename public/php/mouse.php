@@ -18,12 +18,19 @@ while( true )
 
 	if( $file )
 	{
-		switch( $file )
-		{
-			case 'ArrowUp' : $position = $position - ( $width * $leap ); break;
-			case 'ArrowRight' : $position = $position + $leap; break;
-			case 'ArrowDown' : $position = $position + ( $width * $leap ); break;
-			case 'ArrowLeft' : $position = $position - $leap; break;
+		$input = json_decode( $file, true );
+
+		if( isset( $input[ 'x' ], $input[ 'y' ] ) )
+    	{
+			$px = intval( $input[ 'x' ] );
+			$py = intval( $input[ 'y' ] );
+
+			if( $px < 0 ) $px = 0;
+			if( $px >= $width ) $px = $width - 1;
+			if( $py < 0 ) $py = 0;
+			if( $py >= $height ) $py = $height - 1;
+
+			$position = ( $py * $width + $px ) * 3;
 		}
 
 		file_put_contents( '/request/stdin', '' );
